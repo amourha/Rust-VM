@@ -1,0 +1,26 @@
+%include "../vm.inc"
+
+; k[0] ^ k[3] == 0x1337
+shmov shm5, shm0
+shmxor shm5, shm3
+shmovi shm6, 0x1337
+shmxor shm5, shm6  ; Good --> shm5 == 0
+; res0 is in shm5
+
+; k[0] & 0x1414 == 0
+shmovi shm6, 0x1414
+shmand shm0, shm6  ; Good --> shm0 == 0
+; res1 is in shm0
+
+; k[1] | k[2] == 0x7f7f
+shmor shm1, shm2
+shmovi shm6, 0x7f7f
+shmxor shm1, shm6  ; Good --> shm1 == 0
+; res2 is in shm1
+
+shmor shm5, shm0
+shmor shm5, shm1  ; Good --> shm5 == 0
+
+shmov shm0, shm5
+
+shmend
